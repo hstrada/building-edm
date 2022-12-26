@@ -1,0 +1,50 @@
+version: '2.1'
+services:
+  zookeeper:
+    image: quay.io/debezium/zookeeper:2.1
+    container_name: zookeeper
+    ports:
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
+  kafka:
+    image: quay.io/debezium/kafka:2.1
+    container_name: kafka
+    ports:
+     - 9092:9092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2181
+     - ADVERTISED_HOST_NAME
+  mysql:
+    image: quay.io/debezium/example-mysql:2.1
+    container_name: mysql
+    build:
+      context: debezium
+    ports:
+     - 3306:3306
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=debezium --execute \"SELECT 1;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
+    environment:
+     - MYSQL_ROOT_PASSWORD=debezium
+     - MYSQL_USER=mysqluser
+     - MYSQL_PASSWORD=mysqlpw
+  connect:
+    image: quay.io/debezium/connect:2.1
+    container_name: connect
+    ports:
+     - 8083:8083
+    links:
+     - kafka
+     - mysql
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=1
+     - CONFIG_STORAGE_TOPIC=my_source_connect_configs
+     - OFFSET_STORAGE_TOPIC=my_source_connect_offsets
+     - CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE=false
+     - CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE=false
