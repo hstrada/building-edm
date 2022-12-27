@@ -1,6 +1,10 @@
 # Building Event-Driven Microservices: Leveraging Organizational Data at Scale
 
-### Docker
+## Book Reference
+
+https://www.amazon.com.br/Building-Event-Driven-Microservices-Adam-Bellemare/dp/1492057894
+
+## Docker
 
 ```bash
 docker-compose up -d
