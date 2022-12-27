@@ -6,13 +6,15 @@ https://www.amazon.com.br/Building-Event-Driven-Microservices-Adam-Bellemare/dp/
 
 ![Building EDM](https://github.com/hstrada/building-edm/blob/master/debezium-kafka-mysql.png?raw=true)
 
-## Docker
+## Running the project
 
 ```bash
 docker-compose up -d
 ```
 
-## Registrando Connector
+## Connector
+
+### Register
 
 ```curl
 curl --request POST \
@@ -36,7 +38,7 @@ curl --request POST \
 }'
 ```
 
-### Validating Connector
+### Validate
 
 *Listing*
 
